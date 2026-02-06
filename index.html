@@ -3,49 +3,126 @@
 <head>
     <title>💌 A Special Question For You 💌</title>
     <style>
-        body {
+        * {
             margin: 0;
-            background: #FFC0CB;
-            font-family: Arial;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFC0CB 0%, #FFB6C1 50%, #FF69B4 100%);
+            font-family: 'Georgia', serif;
             text-align: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Floating hearts animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
         .header {
-            background: #FF1493;
-            padding: 25px;
+            background: linear-gradient(90deg, #FF1493, #FF69B4, #FF1493);
+            padding: 30px;
             color: white;
-            font-size: 20px;
+            font-size: 22px;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+            animation: float 3s ease-in-out infinite;
         }
 
         .container {
-            background: #FFE5EC;
-            margin: 40px;
-            padding: 40px;
-            border-radius: 20px;
+            background: rgba(255, 229, 236, 0.95);
+            margin: 50px auto;
+            padding: 60px 40px;
+            border-radius: 30px;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.4);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.5);
         }
 
         h1 {
             color: #C71585;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+            font-family: 'Georgia', serif;
+        }
+
+        .subtext {
+            color: #FF69B4;
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 40px;
+            font-family: Arial, sans-serif;
+        }
+
+        .button-container {
+            position: relative;
+            height: 200px;
+            margin-top: 30px;
         }
 
         button {
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         #yesBtn {
-            background: #FF1493;
+            background: linear-gradient(135deg, #FF1493, #FF69B4);
             color: white;
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: 20px 50px;
+            font-size: 20px;
             margin: 20px;
+            position: relative;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        #yesBtn:hover {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
         }
 
         #noBtn {
-            background: #FFB6C1;
-            padding: 10px 25px;
+            background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
+            color: #696969;
+            padding: 12px 30px;
+            font-size: 14px;
             position: absolute;
+            transition: all 0.2s ease;
+        }
+
+        #noBtn:hover {
+            background: linear-gradient(135deg, #FFC0CB, #FFB6C1);
+        }
+
+        /* Overlay for modal */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 20, 147, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 999;
         }
 
         #loveBox {
@@ -54,10 +131,76 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #FFE5EC;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px pink;
+            background: linear-gradient(135deg, #FFE5EC, #FFF0F5);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 0 50px rgba(255, 20, 147, 0.5);
+            max-width: 500px;
+            border: 4px solid #FF1493;
+            z-index: 1000;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        #loveBox h2 {
+            color: #C71585;
+            font-size: 28px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+        }
+
+        #loveBox p {
+            color: #C71585;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .hearts-decoration {
+            font-size: 24px;
+            margin: 20px 0;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        #closeBtn {
+            background: linear-gradient(135deg, #FF1493, #FF69B4);
+            color: white;
+            padding: 15px 35px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #closeBtn:hover {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            color: #FF1493;
+            font-size: 24px;
+            animation: float 2.5s ease-in-out infinite;
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 1.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -68,44 +211,104 @@
 </div>
 
 <div class="container">
+    <div class="hearts-decoration">💕 💖 💕</div>
+    
     <h1>Will you be my Valentine? 💖</h1>
-    <p>(Choose wisely... the NO button is shy 😊)</p>
+    <p class="subtext">(Choose wisely... the NO button is a bit shy! 😊)</p>
 
-    <button id="yesBtn" onclick="sayYes()">YES! 💘</button>
-    <button id="noBtn" onclick="moveNo()">No 😢</button>
+    <div class="button-container">
+        <button id="yesBtn" onclick="sayYes()">YES! 💘</button>
+        <button id="noBtn" onclick="moveNo()">No 😢</button>
+    </div>
+    
+    <div class="hearts-decoration">🌹 💝 🌹</div>
 </div>
 
+<div id="overlay"></div>
+
 <div id="loveBox">
+    <div class="hearts-decoration">💕 ✨ 💖 ✨ 💕</div>
+    
     <h2>You just made my day! ✨</h2>
     <p>
         You're the most amazing person ever! 💖<br><br>
         I'm so lucky to have you as my Valentine! 💕<br><br>
         This is going to be the best Valentine's Day!
     </p>
-    <button onclick="closeLove()">💕 Close 💕</button>
+    
+    <div class="hearts-decoration">💝 🌹 💝</div>
+    
+    <button id="closeBtn" onclick="closeLove()">💕 Close 💕</button>
 </div>
 
+<div class="footer">💕</div>
+
 <script>
+    // Position NO button initially
+    window.onload = function() {
+        const noBtn = document.getElementById("noBtn");
+        noBtn.style.left = (window.innerWidth / 2 - 50) + "px";
+        noBtn.style.top = "350px";
+    };
+
     function moveNo() {
         const button = document.getElementById("noBtn");
+        const container = document.querySelector(".container");
+        const containerRect = container.getBoundingClientRect();
 
-        const x = Math.random() * (window.innerWidth - 150);
-        const y = Math.random() * (window.innerHeight - 100);
+        // Keep button within visible area with better boundaries
+        const maxX = window.innerWidth - 150;
+        const maxY = window.innerHeight - 150;
+        const minX = 50;
+        const minY = 200;
+
+        const x = Math.random() * (maxX - minX) + minX;
+        const y = Math.random() * (maxY - minY) + minY;
 
         button.style.left = x + "px";
         button.style.top = y + "px";
 
         const messages = ["No 😢", "Wait... 🥺", "Are you sure? 💔", "Really? 😭", "Think again! 🙏"];
         button.innerText = messages[Math.floor(Math.random() * messages.length)];
+
+        // Add a little shake effect
+        button.style.animation = "none";
+        setTimeout(() => {
+            button.style.animation = "";
+        }, 10);
     }
 
     function sayYes() {
         document.getElementById("loveBox").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+        
+        // Create sparkle effect
+        createSparkles();
     }
 
     function closeLove() {
         document.getElementById("loveBox").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
     }
+
+    function createSparkles() {
+        const loveBox = document.getElementById("loveBox");
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement("div");
+                sparkle.className = "sparkle";
+                sparkle.style.left = Math.random() * 100 + "%";
+                sparkle.style.top = Math.random() * 100 + "%";
+                sparkle.style.animationDelay = Math.random() * 0.5 + "s";
+                loveBox.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1500);
+            }, i * 100);
+        }
+    }
+
+    // Close modal when clicking overlay
+    document.getElementById("overlay").addEventListener("click", closeLove);
 </script>
 
 </body>
